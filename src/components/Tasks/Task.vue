@@ -1,8 +1,8 @@
 <template>
   <transition
 		appear
-		enter-active-class="animated bounceInLeft"
-		leave-active-class="animated fadeOut absolute"
+		enter-active-class="animated fadeInLeft"
+		leave-active-class="animated fadeOutRight absolute"
 	>
     <q-item 
       @click="updateTask({ id: id, updates: { completed: !task.completed } })"
@@ -42,7 +42,7 @@
             <q-item-label
               class="row justify-end"
               caption>
-              <small>{{ task.dueTime }}</small>
+              <small>{{ taskDueTime }}</small>
             </q-item-label>
           </div>
         </div>
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
   import { date } from 'quasar'
 
 	export default {
@@ -90,7 +90,14 @@
       }
     },
     computed: {
-      ...mapState('tasks', ['search'])
+      ...mapState('tasks', ['search']),
+      ...mapGetters('settings', ['settings']),
+      taskDueTime() {
+        if (this.settings.show12HourTimeFormat) {
+          return date.formatDate(this.task.dueDate + ' ' + this.task.dueTime, 'h:mmA')
+        }
+        return this.task.dueTime
+      }
     },
     methods: {
       ...mapActions('tasks', ['updateTask', 'deleteTask']),
