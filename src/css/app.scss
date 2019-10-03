@@ -1,0 +1,21 @@
+// app global css in SCSS form
+$sizeBorder : 10px;
+
+.text-strikethrough {
+	text-decoration: line-through;
+}
+
+.item-radius {
+	border-bottom-left-radius: $sizeBorder;
+	border-bottom-right-radius: $sizeBorder;
+}
+
+.list-header {
+	border-top-left-radius: $sizeBorder;
+	border-top-right-radius: $sizeBorder;
+}
+
+.border-radius-list {
+	border-bottom-left-radius: $sizeBorder;
+	border-bottom-right-radius: $sizeBorder;
+}
