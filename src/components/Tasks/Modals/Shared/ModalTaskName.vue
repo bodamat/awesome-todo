@@ -18,24 +18,11 @@
 </template>
 
 <script>
-import { selectAll } from "src/directives/directive-select-all";
-
-// import mixinSelectAll from 'src/mixins/mixin-select-all'
+import mixinSelectAll from 'src/mixins/mixin-select-all'
 
 export default {
-	// mixins: [mixinSelectAll],
-	props: ["name"],
-	methods: {
-		selectAll() {
-			this.$refs.select.select();
-		}
-	},
-	directives: {
-		selectAll
-	}
-	// mounted() {
-	// 	this.$refs.select.focus();
-	// }
+	mixins: [mixinSelectAll],
+	props: ["name"]
 };
 </script>
 

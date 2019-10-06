@@ -10,14 +10,14 @@
 				v-if="
 					search &&
 						!Object.keys(tasksTodo).length &&
-						!Object.keys(tasksCompleted).length
-				"
+						!Object.keys(tasksCompleted).length"
 			>
 				No search results.
 			</p>
 
 			<q-scroll-area class="q-scroll-area-tasks">
 				<no-tasks
+					:class="{'q-mb-lg' : settings.showTasksInOneList}"
 					v-if="!Object.keys(tasksTodo).length && !search"
 					@showAddTask="showAddTask = true"
 				></no-tasks>
@@ -62,6 +62,7 @@ export default {
 	},
 	computed: {
 		...mapGetters("tasks", ["tasksTodo", "tasksCompleted"]),
+		...mapGetters("settings", ["settings"]),
 		...mapState("tasks", ["search"])
 	},
 	mounted() {
