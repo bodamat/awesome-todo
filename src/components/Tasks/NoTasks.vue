@@ -6,12 +6,12 @@
 	>
 		<q-banner dense class="bg-grey-3">
 			<template v-slot:avatar>
-				<q-icon name="check" color="primary" />
+				<q-icon :name="icon" color="primary" />
 			</template>
-			No tasks to do today!
+			<slot></slot>
 			<template v-slot:action>
 				<q-btn 
-					@click="$root.$emit('showAddTask')"
+					@click="$emit('showAddTask')"
 					flat color="primary" 
 					label="Add Task"/>
 			</template>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-
+	props: ['icon']
 }
 </script>
 

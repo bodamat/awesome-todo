@@ -69,7 +69,10 @@ module.exports = function(ctx) {
         "QTime",
         "QBanner",
         "QSelect",
-        "QScrollArea"
+        "QScrollArea",
+        'QTabPanels',
+        'QTabPanel',
+        'QSeparator'
       ],
 
       directives: ["Ripple", "ClosePopup", "TouchHold"],

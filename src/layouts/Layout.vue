@@ -2,36 +2,26 @@
   <q-layout view="hHh lpR lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="menu"
-          aria-label="Menu"
-        />
 
         <q-toolbar-title class="absolute-center">
           Awesome Todo
         </q-toolbar-title>
 
+        <q-btn
+          to="/auth"
+          flat
+          icon-right="account_circle"
+          label="Login"
+          class="absolute-right"
+         />
+
       </q-toolbar>
     </q-header>
 
-    <!-- <q-footer>
-      <q-tabs>
-        <q-route-tab
-          v-for="nav in navs"
-          :key="nav.label"
-          :to="nav.to"
-          :icon="nav.icon"
-          :label="nav.label" />
-      </q-tabs>
-    </q-footer> -->
-
     <q-drawer
-      v-model="leftDrawerOpen"
-      :breakpoint="767"
+      v-if="!this.$q.screen.lt.md"
+      v-model="showDrawer"
+      :breakpoint="850"
       :width="250"
       bordered
       content-class="bg-primary"
@@ -57,6 +47,19 @@
       </q-list>
     </q-drawer>
 
+    <q-footer
+      v-if="$q.screen.lt.md"
+    >
+      <q-tabs>
+        <q-route-tab
+          v-for="nav in navs"
+          :key="nav.label"
+          :to="nav.to"
+          :icon="nav.icon"
+          :label="nav.label" />
+      </q-tabs>
+    </q-footer>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -70,7 +73,7 @@
     name: 'MyLayout',
     data () {
       return {
-        leftDrawerOpen: this.$q.platform.is.desktop,
+        showDrawer : true,
         navs: [
           {
             label: 'Todo',
@@ -87,17 +90,14 @@
     },
     methods: {
       openURL
+    },
+    mounted() {
+      this.$q.screen.setSizes({ sm: 300, md: 850, lg: 1000, xl: 2000 })
     }
   }
 </script>
 
-<style lang="scss">
-  @media screen and (min-width: 768px) {
-    .q-footer {
-      display: none;
-    }
-  }
-  
+<style lang="scss">  
   .q-drawer {
     .q-router-link--exact-active {
       color: white !important;

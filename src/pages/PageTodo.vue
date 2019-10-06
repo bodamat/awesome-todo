@@ -12,15 +12,26 @@
 						!Object.keys(tasksTodo).length &&
 						!Object.keys(tasksCompleted).length"
 			>
-				No search results.
+				<no-tasks
+					@showAddTask="showAddTaskMethod(search)"
+					icon="mood_bad"
+				>
+				No search results. Add task?
+				</no-tasks>
 			</p>
 
 			<q-scroll-area class="q-scroll-area-tasks">
 				<no-tasks
+					v-if="
+					!Object.keys(tasksTodo).length &&
+					!search"
+
 					:class="{'q-mb-lg' : settings.showTasksInOneList}"
-					v-if="!Object.keys(tasksTodo).length && !search"
-					@showAddTask="showAddTask = true"
-				></no-tasks>
+					@showAddTask="showAddTaskMethod('')"
+					icon="check"
+				>
+				No tasks to do today! Add task?
+				</no-tasks>
 
 				<tasks-todo
 					v-if="Object.keys(tasksTodo).length"
@@ -46,7 +57,7 @@
 		</div>
 
 		<q-dialog v-model="showAddTask">
-			<add-task @close="showAddTask = false" />
+			<add-task @close="showAddTask = false" :addTaskName="addTaskName" />
 		</q-dialog>
 	</q-page>
 </template>
@@ -57,7 +68,8 @@ import { mapGetters, mapState } from "vuex";
 export default {
 	data() {
 		return {
-			showAddTask: false
+			showAddTask: false,
+			addTaskName: ''
 		};
 	},
 	computed: {
@@ -65,11 +77,17 @@ export default {
 		...mapGetters("settings", ["settings"]),
 		...mapState("tasks", ["search"])
 	},
-	mounted() {
-		this.$root.$on("showAddTask", () => {
-			this.showAddTask = true;
-		});
+	methods: {
+		showAddTaskMethod(value) {
+			this.addTaskName = value
+			this.showAddTask = true
+		}
 	},
+	// mounted() {
+	// 	this.$root.$on("showAddTask", () => {
+	// 		this.showAddTask = true;
+	// 	});
+	// },
 	components: {
 		"add-task": require("components/Tasks/Modals/AddTask.vue").default,
 		"tasks-todo": require("components/Tasks/TaskTodo.vue").default,

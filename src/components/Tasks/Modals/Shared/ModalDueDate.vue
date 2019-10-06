@@ -5,13 +5,18 @@
 			label="Due date"
 			:value="dueDate"
 			@input="$emit('update:dueDate', $event)"
-			class="col">
+			class="col"
+			mask="date"
+		>
+
 			<template v-slot:append>
+
 				<q-icon
 					v-if="dueDate"
 					@click="$emit('clear')"
 					name="close"
 					class="cursor-pointer" />
+
 				<q-icon name="event" class="cursor-pointer">
 					<q-popup-proxy>
 						<q-date 
@@ -19,7 +24,9 @@
 							@input="$emit('update:dueDate', $event)" />
 					</q-popup-proxy>
 				</q-icon>
+
 			</template>
+
 		</q-input>
 	</div>
 </template>
