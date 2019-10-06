@@ -75,7 +75,7 @@ module.exports = function(ctx) {
       directives: ["Ripple", "ClosePopup", "TouchHold"],
 
       // Quasar plugins
-      plugins: ["Notify", "Dialog"]
+      plugins: ["Notify", "Dialog", 'LocalStorage']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
