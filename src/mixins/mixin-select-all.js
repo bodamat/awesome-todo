@@ -1,7 +1,7 @@
 export default {
   methods: {
     selectAll() {
-      this.$refs.select.select()
+      this.$nextTick(() => this.$refs.select.select())
     }
   }
 };
