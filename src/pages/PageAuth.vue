@@ -36,7 +36,7 @@
 export default {
 	data () {
     return {
-      tab: 'register'
+      tab: 'login'
     }
 	},
 	components: {

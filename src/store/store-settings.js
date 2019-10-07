@@ -1,5 +1,4 @@
 import { LocalStorage } from 'quasar'
-import { stat } from 'fs'
 
 const state = {
 	settings: {
