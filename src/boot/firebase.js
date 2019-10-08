@@ -1,8 +1,8 @@
 import * as firebase from "firebase/app";
 
 import "firebase/analytics";
-
 import "firebase/auth";
+import "firebase/database";
 // import "firebase/firestore";
 
 var firebaseConfig = {
@@ -20,5 +20,6 @@ let firebaseApp = firebase.initializeApp(firebaseConfig);
 let firebaseAnalytics = firebase.analytics();
 
 let firebaseAuth = firebaseApp.auth()
+let firebaseDb = firebaseApp.database()
 
-export { firebaseAuth }
+export { firebaseAuth, firebaseDb }

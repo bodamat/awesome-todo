@@ -1,29 +1,32 @@
 import Vue from "vue";
-import { uid } from "quasar";
+import { uid } from "quasar"
+import { firebaseDb, firebaseAuth } from "boot/firebase";
+import {showErrorMessage} from '../functions/function-show-error-message';
 
 const state = {
   tasks: {
-    ID1: {
-      name: "Go to shop",
-      completed: false,
-      dueDate: "2019/05/12",
-      dueTime: "18:30"
-    },
-    ID2: {
-      name: "Get bananas",
-      completed: false,
-      dueDate: "2019/05/13",
-      dueTime: "14:00"
-    },
-    ID3: {
-      name: "Get apples",
-      completed: false,
-      dueDate: "2019/05/14",
-      dueTime: "16:00"
-    }
+    // ID1: {
+    //   name: "Go to shop",
+    //   completed: false,
+    //   dueDate: "2019/05/12",
+    //   dueTime: "18:30"
+    // },
+    // ID2: {
+    //   name: "Get bananas",
+    //   completed: false,
+    //   dueDate: "2019/05/13",
+    //   dueTime: "14:00"
+    // },
+    // ID3: {
+    //   name: "Get apples",
+    //   completed: false,
+    //   dueDate: "2019/05/14",
+    //   dueTime: "16:00"
+    // }
   },
   search: "",
-  sort: "name"
+  sort: "name",
+  tasksDownloaded: false
 };
 
 const mutations = {
@@ -36,34 +39,115 @@ const mutations = {
   addTask(state, payload) {
     Vue.set(state.tasks, payload.id, payload.task);
   },
+  clearTasks(state) {
+    state.tasks = {}
+  },
   setSearch(state, value) {
     state.search = value;
   },
   setSort(state, value) {
     state.sort = value;
+  },
+  setTasksDownloaded(state, value) {
+    state.tasksDownloaded = value
   }
 };
 
 const actions = {
-  updateTask({ commit }, payload) {
-    commit("updateTask", payload);
+  updateTask({ commit, dispatch }, payload) {
+    // commit("updateTask", payload);
+    dispatch("fbUpdateTask", payload);
   },
-  deleteTask({ commit }, id) {
-    commit("deleteTask", id);
+  deleteTask({ commit, dispatch }, id) {
+    // commit("deleteTask", id);
+    dispatch("fbDeleteTask", id);
   },
-  addTask({ commit }, task) {
+  addTask({ dispatch }, task) {
     let taskId = uid();
     let payload = {
       id: taskId,
       task: task
     };
-    commit("addTask", payload);
+    // commit("addTask", payload);
+    dispatch('fbAddTask', payload)
   },
   setSearch({ commit }, value) {
     commit("setSearch", value);
   },
   setSort({ commit }, value) {
     commit("setSort", value);
+  },
+
+  fbReadData({ commit }) {
+    let userId = firebaseAuth.currentUser.uid
+    let userTasks = firebaseDb.ref('tasks/' + userId)
+
+    //initial check for data
+    userTasks.once('value', snapshot => {
+      commit('setTasksDownloaded', true)
+    }, error => {
+      showErrorMessage(error.message)
+      this.$router.replace('/auth')
+    })
+
+    //child added
+    userTasks.on('child_added', snapshot => {
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        task: task
+      }
+
+      commit('addTask', payload)
+    })
+
+    //child changed
+    userTasks.on('child_changed', snapshot => {
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        updates: task
+      }
+
+      commit('updateTask', payload)
+    })
+
+    //child removed
+    userTasks.on('child_removed', snapshot => {
+      let taskId = snapshot.key
+
+      commit('deleteTask', taskId)
+    })
+  },
+  fbAddTask({}, payload) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+
+    taskRef.set(payload.task, error => {
+      if (error) {
+        showErrorMessage(error.message)
+      }
+    })
+  },
+  fbUpdateTask({}, payload) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+
+    taskRef.update(payload.updates, error => {
+      if (error) {
+        showErrorMessage(error.message)
+      }
+    })
+  },
+  fbDeleteTask({}, taskId) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + taskId)
+
+    taskRef.remove(error => {
+      if (error) {
+        showErrorMessage(error.message)
+      }
+    })
   }
 };
 

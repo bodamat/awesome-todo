@@ -49,4 +49,16 @@ export default {
 	.auth-tabs {
 		min-width: 500px
 	}
+
+	@media screen and (max-width: 500px) {
+		.auth-tabs {
+			min-width: 400px
+		}
+	}
+
+	@media screen and (max-width: 400px) {
+		.auth-tabs {
+			min-width: 300px
+		}
+	}
 </style>
