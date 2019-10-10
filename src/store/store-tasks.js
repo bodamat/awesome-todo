@@ -42,6 +42,10 @@ const mutations = {
   clearTasks(state) {
     state.tasks = {}
   },
+  setToDefalut(state) {
+    state.search = "",
+    state.sort = "name"
+  },
   setSearch(state, value) {
     state.search = value;
   },

@@ -47,6 +47,7 @@ const actions = {
 			}
 			else {
 				commit('tasks/clearTasks', null, { root: true })
+				commit('tasks/setToDefalut', null, { root: true })
 				commit('tasks/setTasksDownloaded', false, { root: true })
 				commit('setLoggedIn', false)
 				LocalStorage.set('loggedIn', false)
