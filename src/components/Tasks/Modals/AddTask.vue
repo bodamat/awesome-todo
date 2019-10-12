@@ -31,9 +31,11 @@
 <script>
 	import { mapActions } from 'vuex'
 	import mixinAddEditTask from 'src/mixins/mixin-add-edit-task'
+import { log } from 'util'
 
 	export default {
 		mixins: [mixinAddEditTask],
+		props: ['addTaskName'],
 		data() {
 			return {
 				taskToSubmit: {
@@ -50,6 +52,9 @@
 				this.addTask(this.taskToSubmit)
 				this.$emit('close')
 			},
+		},
+		mounted() {
+			this.taskToSubmit.name = this.addTaskName
 		}
 	}
 </script>
