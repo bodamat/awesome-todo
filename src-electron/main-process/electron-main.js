@@ -10,13 +10,17 @@ if (process.env.PROD) {
 
 let mainWindow
 
-function createWindow () {
+app.on('ready', () => {
+
   /**
    * Initial window options
    */
+
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
+    minWidth: 500,
+    minHeight: 400,
     useContentSize: true,
     webPreferences: {
       nodeIntegration: true
@@ -28,18 +32,8 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-}
-
-app.on('ready', createWindow)
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
 })
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
+app.on('window-all-closed', () => {
+    app.quit()
 })
