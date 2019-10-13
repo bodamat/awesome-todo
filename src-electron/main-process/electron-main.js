@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 import { menuTemplate } from './electron-main-menu-template'
 
 /**
@@ -40,4 +40,8 @@ app.on('ready', () => {
 
 app.on('window-all-closed', () => {
     app.quit()
+})
+
+ipcMain.on('quit-app', () => {
+  app.quit()
 })
