@@ -25,6 +25,7 @@ export const menuTemplate = [
     submenu: [
 			{
 				label: 'Settings',
+				accelerator: 'CmdOrCtrl+,',
 				click() {
 					mainWindow.webContents.send('show-settings')
 				}
