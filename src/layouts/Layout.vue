@@ -53,6 +53,19 @@
             <q-item-label>{{ nav.label }}</q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-item
+          v-if="$q.platform.is.electron"
+          @click="quitApp"
+          class="text-test absolute-bottom"
+          clickable>
+          <q-item-section avatar>
+            <q-icon name="power_settings_new" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Quit</q-item-label>
+          </q-item-section>
+        </q-item>
         
       </q-list>
     </q-drawer>
@@ -104,7 +117,21 @@
     },
     methods: {
       ...mapActions('auth', ['logoutUser']),
-      openURL
+      openURL,
+      quitApp() {
+        this.$q.dialog({
+          title: 'Quit',
+          message: 'Really quit Awesome Todo?',
+          cancel: true,
+          ok: {
+            color: 'negative'
+          },
+          persistent: true
+        }).onOk(() => {
+          if (this.$q.platform.is.electron)
+            require('electron').ipcRenderer.send('quit-app')
+        })
+      }
     },
     mounted() {
       this.$q.screen.setSizes({ sm: 300, md: 850, lg: 1000, xl: 2000 })

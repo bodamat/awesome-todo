@@ -11,7 +11,7 @@
 			:rules="[val => !!val || 'Field is required']"
 			clear-icon="close"
 			clearable
-			autofocus
+			v-autofocus="{ delayCordova: 700 }"
 			outlined
 		></q-input>
 	</div>
@@ -19,10 +19,14 @@
 
 <script>
 import mixinSelectAll from 'src/mixins/mixin-select-all'
+import { autofocus } from 'src/directives/directive-autofocus'
 
 export default {
 	mixins: [mixinSelectAll],
-	props: ["name"]
+	props: ["name"],
+	directives: {
+		autofocus
+	}
 };
 </script>
 

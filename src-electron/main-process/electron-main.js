@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
+import { menuTemplate } from './electron-main-menu-template'
 
 /**
  * Set `__statics` path to static files in production;
@@ -8,7 +9,8 @@ if (process.env.PROD) {
   global.__statics = require('path').join(__dirname, 'statics').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+export let mainWindow
+const menu = Menu.buildFromTemplate(menuTemplate)
 
 app.on('ready', () => {
 
@@ -32,8 +34,14 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  Menu.setApplicationMenu(menu)
 })
 
 app.on('window-all-closed', () => {
     app.quit()
+})
+
+ipcMain.on('quit-app', () => {
+  app.quit()
 })
