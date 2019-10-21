@@ -113,9 +113,20 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .q-scroll-area-tasks {
 	display: flex;
 	flex-grow: 1;
+
+	.mobile & {
+		flex-basis: 100px;
+	}
+}
+.electron {
+	.q-scroll-area-tasks {
+		.scroll {
+			height: auto !important;
+		}
+	}
 }
 </style>
